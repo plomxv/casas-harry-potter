@@ -110,6 +110,27 @@ const perguntas = [
             }
         ]
     },
+    {
+        enunciado: "Você está em uma feira mágica e se depara com quatro poções brilhantes em uma mesa. Cada poção tem uma cor diferente: uma é vermelha como rubis, outra é verde como esmeraldas, a terceira é azul como safiras e a última é roxa como ametistas. Qual poção você escolhe experimentar primeiro e por quê?",
+        alternativas: [
+            {
+                texto: "Decido experimentar a poção azul como safiras, pois sou fascinado pela calma e serenidade que a cor azul transmite",
+                afirmacao: "Corvinal"
+            },
+            {
+                texto: "Opto pela poção verde como esmeraldas, pois me sinto conectado à natureza e à renovação que a cor verde simboliza",
+                afirmacao: "Lufa lufa"
+            },
+            {
+                texto: "Escolho a poção roxa como ametista, pois gosto da mística e da sabedoria associadas à cor roxa",
+                afirmacao: "Sonserina"
+            },
+            {
+                texto: "Escolho a poção vermelha como rubis, pois me sinto atraído pela bravura e paixão associadas à cor vermelha",
+                afirmacao: "Grifinória"
+            }
+        ]
+    },    
 ];
 
 
@@ -137,17 +158,27 @@ function mostraAlternativas(){
     }
 }
 
+mostraPergunta();
+
+let contagemAfirmacoes = {}; // Objeto para armazenar a contagem de cada afirmação
+
 function respostaSelecionada(opcaoSelecionada) {
-    const afirmacoes = opcaoSelecionada.afirmacao;
-    historiaFinal += afirmacoes + " ";
+    const afirmacaoSelecionada = opcaoSelecionada.afirmacao;
+    if (contagemAfirmacoes.hasOwnProperty(afirmacaoSelecionada)) {
+        contagemAfirmacoes[afirmacaoSelecionada]++;
+    } else {
+        contagemAfirmacoes[afirmacaoSelecionada] = 1;
+    }
+    
+    historiaFinal += afirmacaoSelecionada + " ";
     atual++;
     mostraPergunta();
 }
 
 function mostraResultado() {
     caixaPerguntas.textContent = "Sua casa é...";
-    textoResultado.textContent = historiaFinal;
+    const afimMaisEscolhida = Object.keys(contagemAfirmacoes).reduce((a, b) => contagemAfirmacoes[a] > contagemAfirmacoes[b] ? a : b);
+    textoResultado.textContent = afimMaisEscolhida;
     caixaAlternativas.textContent = "";
 }
 
-mostraPergunta();
